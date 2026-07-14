@@ -1,0 +1,12 @@
+A MongoDB cluster is a group of interconnected servers (nodes) that work together to store data,
+providing high availability, redundancy, and horizontal scaling
+
+“MongoDB cluster ka matlab hota hai multiple servers ka group
+jo ek saath database ko manage karte hain. Isse system highly available rehta hai,
+data multiple nodes par safe rehta hai, aur load badhne par easily new
+servers add karke scale kiya ja sakta hai.”
+
+👉 Mongoose is an Object Data Modeling (ODM) library for Node.js that provides a structured way to
+interact with MongoDB by defining schemas, enforcing validation, and simplifying database operations.
+
+👉 “Mongoose is an ODM library that helps structure and manage MongoDB data in Node.js.”
