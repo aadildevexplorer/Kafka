@@ -9,12 +9,16 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendEmail = async (options) => {
-  await transporter.sendMail({
-    from: `"MERN Auth" <${process.env.EMAIL_USER}>`,
+  const info = await transporter.sendMail({
+    from: `"Developer Chowk" <${process.env.EMAIL_USER}>`,
     to: options.email,
     subject: options.subject,
     html: options.message,
   });
+
+  console.log("📧 Mail Info:", info);
+
+  return info;
 };
 
 module.exports = sendEmail;

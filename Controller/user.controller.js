@@ -1,8 +1,8 @@
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const sendEmail = require("../kafka/utils/sendEmail");
-console.log(sendEmail);
+const { sendMessage } = require("../kafka/producer");
+
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -24,21 +24,12 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
-   try {
-  await sendEmail({
-    email: user.email,
-    subject: "Welcome to Developer chowk 🎉",
-    message: `
-      <h2>Welcome ${user.name}</h2>
-      <p>Your account has been created successfully.</p>
-      <p>Thanks for joining us.</p>
-    `,
-  });
+    await sendMessage("send-email", {
+      name: user.name,
+      email: user.email,
+    });
 
-  console.log(`✅ Welcome email sent successfully to ${user.email}`);
-} catch (error) {
-  console.error("❌ Failed to send welcome email:", error.message);
-}
+    console.log("✅ Email event pushed to Kafka");
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });

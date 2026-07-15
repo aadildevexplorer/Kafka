@@ -1,10 +1,13 @@
+require("dotenv").config();
 const dns = require("node:dns");
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const express = require("express");
 const connectDB = require("./Config/db");
+const { connectProducer } = require("./kafka/producer");
+const { connectConsumer } = require("./kafka/consumer");
+
 const app = express();
-require("dotenv").config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -20,6 +23,11 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/user/auth", require("./route/userRoute"));
+
+(async () => {
+  await connectProducer();
+  await connectConsumer();
+})();
 
 app.listen(PORT, (req, res) => {
   console.log(`server is running on PORT : ${PORT}`);

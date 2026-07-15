@@ -1,0 +1,256 @@
+Apache Kafka kya hai?
+
+Apache Kafka ek distributed event streaming platform hai jo real-time data ko receive, store aur process karta hai.
+
+Simple language me:
+
+Kafka ek bahut fast message broker hai jo ek application se dusri application tak data ko reliable aur real-time me pahunchata hai.
+
+Example:
+
+User Signup
+     │
+     ▼
+  Kafka Topic
+     │
+ ┌───┴────────────┐
+ ▼                ▼
+Email Service   Analytics Service
+                Notification Service
+
+Ek event aaya aur Kafka ne us event ko multiple services tak pahucha diya.
+
+Kafka ki need kyu padi?
+
+Maan lo tumhare paas e-commerce website hai.
+
+User ne order place kiya.
+
+Uske baad ye sab kaam hone hain:
+
+Email bhejna
+SMS bhejna
+Inventory update
+Payment verify
+Analytics update
+Invoice generate
+
+Agar sab kaam ek hi API karegi:
+
+Client
+   │
+Backend
+ ├──Email
+ ├──SMS
+ ├──Inventory
+ ├──Analytics
+ ├──Invoice
+
+To response slow ho jayega.
+
+Kafka use karne par:
+
+Client
+   │
+Backend
+   │
+Publish Event
+   │
+ Kafka
+ ├──Email Service
+ ├──SMS Service
+ ├──Inventory Service
+ ├──Analytics Service
+ └──Invoice Service
+
+Backend sirf event publish karta hai.
+// ------------------------------------------- //
+Kafka & Docker Notes (Beginner Friendly)
+
+1. Kafka kya hai?
+
+Apache Kafka ek Distributed Event Streaming Platform hai. Simple
+language me, Kafka ek message broker hai jo Producer aur Consumer ke
+beech messages ko safely store aur deliver karta hai.
+
+Example: User Register → Kafka → Consumer → Welcome Email
+
+------------------------------------------------------------------------
+
+2. Kafka ki zarurat kyu padti hai?
+
+Without Kafka:
+
+Register API → Save User → Send Email → Response
+
+Agar email bhejne me delay ya error ho jaye to API slow ho sakti hai.
+
+With Kafka:
+
+Register API → Save User → Kafka me message → User ko turant response
+
+Background: Kafka Consumer → NodeMailer → Email
+
+Isse API fast rehti hai.
+
+------------------------------------------------------------------------
+
+3. Hamare Auth Project me Kafka kyu use kiya?
+
+Hamare project me Kafka ka use Welcome Email ko background me bhejne ke
+liye hua.
+
+Flow:
+
+Client ↓ Register API ↓ MongoDB ↓ Kafka Producer ↓ Topic (send-email) ↓
+Kafka Consumer ↓ NodeMailer ↓ Gmail
+
+Producer sirf message bhejta hai. Consumer message receive karke email
+bhejta hai.
+
+------------------------------------------------------------------------
+
+4. Producer kya hai?
+
+Producer wo service hoti hai jo Kafka ko message bhejti hai.
+
+Hamare project me:
+
+Register Controller ↓ Producer ↓ Topic
+
+------------------------------------------------------------------------
+
+5. Topic kya hai?
+
+Topic ek logical channel hai jahan messages store hote hain.
+
+Example:
+
+send-email order-created payment-success
+
+Hamne use kiya:
+
+send-email
+
+------------------------------------------------------------------------
+
+6. Consumer kya hai?
+
+Consumer Topic se message receive karta hai aur process karta hai.
+
+Hamare project me:
+
+Topic ↓ Consumer ↓ NodeMailer ↓ Email
+
+------------------------------------------------------------------------
+
+7. Kafka ke Benefits
+
+-   Fast response
+-   Background processing
+-   Loose coupling
+-   Scalable
+-   Reliable
+-   Retry possible
+-   Multiple consumers possible
+
+------------------------------------------------------------------------
+
+8. Docker kya hai?
+
+Docker ek platform hai jo applications ko containers me run karta hai.
+
+Isse “mere system me chal raha tha, tumhare me nahi” wali problem kam ho
+jati hai.
+
+------------------------------------------------------------------------
+
+9. Docker kyu use kiya?
+
+Windows par Kafka manually install karna mushkil ho sakta hai.
+
+Isliye Docker use kiya.
+
+Benefits:
+
+-   Easy setup
+-   Same environment
+-   One command se run
+-   Easy remove/update
+
+Hamne:
+
+docker compose up -d
+
+chalaya aur Kafka start ho gaya.
+
+------------------------------------------------------------------------
+
+10. Image kya hoti hai?
+
+Image ek blueprint/template hoti hai.
+
+Example:
+
+apache/kafka:3.9.0
+
+Image me application aur uski dependencies hoti hain.
+
+------------------------------------------------------------------------
+
+11. Container kya hota hai?
+
+Image jab run hoti hai tab Container banta hai.
+
+Example:
+
+Image ↓
+
+Container
+
+Hamare system me:
+
+Kafka Image ↓
+
+Kafka Container
+
+Container hi actual running application hai.
+
+------------------------------------------------------------------------
+
+12. Ubuntu kya hai?
+
+Ubuntu Linux operating system hai.
+
+Bahut se Docker images Ubuntu ya kisi Linux base par bani hoti hain.
+
+Docker container ke andar Linux environment hota hai chahe host Windows
+ho.
+
+------------------------------------------------------------------------
+
+13. Docker Flow
+
+Docker Image ↓ Docker Container ↓ Application Running
+
+------------------------------------------------------------------------
+
+14. Kafka + Docker Flow
+
+Docker ↓ Kafka Container ↓ Kafka Broker ↓ Producer ↓ Topic ↓ Consumer ↓
+NodeMailer ↓ Email
+
+------------------------------------------------------------------------
+
+15. Interview Answer
+
+Q. Auth project me Kafka kyu use kiya?
+
+Answer:
+
+“Hamne Kafka ka use user registration ke baad Welcome Email ko
+asynchronous background process me bhejne ke liye kiya. Isse API fast ho
+gayi, email service registration se decouple ho gayi aur email failure
+ki wajah se registration process affect nahi hota.”
+
+
